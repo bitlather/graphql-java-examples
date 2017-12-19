@@ -37,4 +37,32 @@ of edges in memory
 
 
 
- 
+Installation Instructions
+-------------------------
+```
+./gradlew build
+```
+
+Run Instructions
+----------------
+
+Run this command:
+
+```
+gradle run
+```
+
+Visit [http://localhost:8080/index.html](http://localhost:3000/index.html).
+
+Query the following:
+```
+{
+  books {
+  	edges {
+      node {
+        id
+      }
+    }
+  }
+}
+``` 

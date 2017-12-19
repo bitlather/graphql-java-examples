@@ -13,9 +13,12 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +52,17 @@ public class IceAndFireApiProxy extends AbstractHandler {
         Server server = new Server(PORT);
         //
         // In Jetty, handlers are how your get called backed on a request
-        server.setHandler(new IceAndFireApiProxy());
+        IceAndFireApiProxy main_handler = new IceAndFireApiProxy();
+
+        ResourceHandler resource_handler = new ResourceHandler();
+        resource_handler.setDirectoriesListed(false);
+        resource_handler.setWelcomeFiles(new String[]{"index.html"});
+        resource_handler.setResourceBase("./src/main/resources/httpmain");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[]{resource_handler, main_handler});
+        server.setHandler(handlers);
+
         server.start();
 
         server.join();

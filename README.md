@@ -52,7 +52,7 @@ Run this command:
 gradle run
 ```
 
-Visit [http://localhost:8080/index.html](http://localhost:3000/index.html).
+Visit [http://localhost:3000/index.html](http://localhost:3000/index.html).
 
 Query the following:
 ```

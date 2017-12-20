@@ -69,7 +69,7 @@ public class HttpClient {
     }
 
     public static DataAndResponse readResourceUrl(String url) {
-        System.out.println("      -> readResourceUrl");
+        System.out.println("      -> HttpClient.readResourceUrl() " + url);
         if (url == null || url.trim().isEmpty()) {
             return new DataAndResponse(null, null);
         }
@@ -86,7 +86,7 @@ public class HttpClient {
     }
 
     private static DataAndResponse read(Request request) throws IOException {
-
+        System.out.println("        -> HttpClient.read()");
         //log.info("Reading {}...", request.url());
         Response response = httpClient.newCall(request).execute();
         ResponseBody body = response.body();

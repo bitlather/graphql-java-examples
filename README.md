@@ -56,11 +56,11 @@ Visit [http://localhost:3000/index.html](http://localhost:3000/index.html).
 Query the following:
 ```
 {
-  books {
-  	edges {
+  books(first:2) {
+    edges {
       node {
         name
-        characters {
+        characters(first:2) {
           edges {
             node {
               name
@@ -72,3 +72,35 @@ Query the following:
   }
 }
 ``` 
+
+Here's an example of two different orders in which functions were called:
+
+```
+-> readPagedObjects() on books
+      -> HttpClient.readResourceUrl() https://www.anapioficeandfire.com/api/books?pageNumber=0&pageSize=50
+        -> HttpClient.read()
+  -> urlConnection() fieldName: characters
+    -> urlBatchLoader
+      -> HttpClient.readResourceUrl() https://www.anapioficeandfire.com/api/characters/2
+        -> HttpClient.read()
+      -> HttpClient.readResourceUrl() https://www.anapioficeandfire.com/api/characters/12
+        -> HttpClient.read()
+  -> urlConnection() fieldName: characters
+          -> urlConnection() fieldName: characters (promise finished)
+          -> urlConnection() fieldName: characters (promise finished)
+```
+
+```
+-> readPagedObjects() on books
+      -> HttpClient.readResourceUrl() https://www.anapioficeandfire.com/api/books?pageNumber=0&pageSize=50
+        -> HttpClient.read()
+  -> urlConnection() fieldName: characters
+    -> urlBatchLoader
+      -> HttpClient.readResourceUrl() https://www.anapioficeandfire.com/api/characters/2
+        -> HttpClient.read()
+  -> urlConnection() fieldName: characters
+      -> HttpClient.readResourceUrl() https://www.anapioficeandfire.com/api/characters/12
+        -> HttpClient.read()
+          -> urlConnection() fieldName: characters (promise finished)
+          -> urlConnection() fieldName: characters (promise finished)
+```

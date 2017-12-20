@@ -94,7 +94,7 @@ class IceAndFireDataFetchers {
             CompletableFuture<List<Object>> resourceLoadsPromise = resourceDataLoader.loadMany(pagedUrls); 
 
             return resourceLoadsPromise.thenApply(resourceList -> {
-                System.out.println("        -> urlConnection() fieldName: " + fieldName + " (promise finished)");
+                System.out.println("          -> urlConnection() fieldName: " + fieldName + " (promise finished)");
                 resourceList = resourceList.stream().map(this::addGlobalIds).collect(toList());
                 SimpleListConnection<Object> relayConnection = new SimpleListConnection<>(resourceList);
                 //
@@ -158,7 +158,7 @@ class IceAndFireDataFetchers {
     }
 
     private PagedResult<Map<String, Object>> readPagedObjects(String resource, int pageNumber) {
-        System.out.println("*DTA readPagedObjects() on "+resource);
+        System.out.println("-> readPagedObjects() on "+resource);
         //log.info("Fetching {} page: {}", resource, pageNumber);
         PagedResult<Map<String, Object>> pagedResult =
                 HttpClient.readResource(resource, qp("pageNumber", pageNumber), qp("pageSize", PAGE_SIZE));

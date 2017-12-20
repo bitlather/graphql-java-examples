@@ -67,6 +67,7 @@ class IceAndFireDataFetchers {
      * @return a data fetcher that follows URLs
      */
     DataFetcher urlConnection() {
+        System.out.println("*DTA called urlConnection()");
         return env -> {
             Map<String, Object> source = env.getSource();
             String fieldName = env.getFieldDefinition().getName();
@@ -153,6 +154,7 @@ class IceAndFireDataFetchers {
     }
 
     private PagedResult<Map<String, Object>> readPagedObjects(String resource, int pageNumber) {
+        System.out.println("*DTA readPagedObjects() on "+resource);
         log.info("Fetching {} page: {}", resource, pageNumber);
         PagedResult<Map<String, Object>> pagedResult =
                 HttpClient.readResource(resource, qp("pageNumber", pageNumber), qp("pageSize", PAGE_SIZE));

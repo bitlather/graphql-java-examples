@@ -86,7 +86,7 @@ public class HttpClient {
 
     private static DataAndResponse read(Request request) throws IOException {
 
-        log.info("Reading {}...", request.url());
+        //log.info("Reading {}...", request.url());
         Response response = httpClient.newCall(request).execute();
         ResponseBody body = response.body();
         long ms = response.receivedResponseAtMillis() - response.sentRequestAtMillis();
@@ -98,7 +98,7 @@ public class HttpClient {
             obj = fromJson(jsonString);
         }
 
-        log.info("  {} : {} chars in {} ms", response.code(), jsonString.length(), ms);
+        //log.info("  {} : {} chars in {} ms", response.code(), jsonString.length(), ms);
         return new DataAndResponse(response, obj);
     }
 

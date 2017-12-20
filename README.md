@@ -32,8 +32,7 @@ What I learnt was :
 - `CompleteableFuture` support in graphql-java is da bomb!  Wicked good. 
 - Used well, `java-dataloader` is da double bomb!  By priming the cache and using URLs as keys we cache the sheet out of everything
 - Relay pagination is tricky.  Not impossible but tricky with forward only pagination.
-- The Relay support in graphql-java is basic (it doesn't pretend to be more I guess) and really on works if you have a complete list 
-of edges in memory 
+- The Relay support in graphql-java is basic (it doesn't pretend to be more I guess) and really on works if you have a complete list of edges in memory 
 
 
 
@@ -60,7 +59,14 @@ Query the following:
   books {
   	edges {
       node {
-        id
+        name
+        characters {
+          edges {
+            node {
+              name
+            }
+          }
+        }
       }
     }
   }

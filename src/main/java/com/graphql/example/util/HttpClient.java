@@ -69,6 +69,7 @@ public class HttpClient {
     }
 
     public static DataAndResponse readResourceUrl(String url) {
+        System.out.println("      -> readResourceUrl");
         if (url == null || url.trim().isEmpty()) {
             return new DataAndResponse(null, null);
         }

@@ -31,6 +31,7 @@ class IceAndFireDataFetchers {
     public static final int PAGE_SIZE = 50; // this is what they allow
 
     private BatchLoader<String, Object> urlBatchLoader = urls -> {
+        System.out.println("    -> urlBatchLoader");
 
         // The backing API does not have an API to get multiple resources
         // in one batch.  We just have a series of resource URLS instead.
@@ -73,6 +74,8 @@ class IceAndFireDataFetchers {
             String fieldName = env.getFieldDefinition().getName();
             List<String> allUrls = mapGet(source, fieldName);
 
+            System.out.println("  -> urlConnection() fieldName: " + fieldName);
+
 
             //
             // SimpleListConnection.get() allows us to apply "pagination arguments"
@@ -88,9 +91,10 @@ class IceAndFireDataFetchers {
 
             List<String> pagedUrls = RelayUtils.getEdgeNodes(urlConnection);
 
-            CompletableFuture<List<Object>> resourceLoadsPromise = resourceDataLoader.loadMany(pagedUrls);
+            CompletableFuture<List<Object>> resourceLoadsPromise = resourceDataLoader.loadMany(pagedUrls); 
 
             return resourceLoadsPromise.thenApply(resourceList -> {
+                System.out.println("        -> urlConnection() fieldName: " + fieldName + " (promise finished)");
                 resourceList = resourceList.stream().map(this::addGlobalIds).collect(toList());
                 SimpleListConnection<Object> relayConnection = new SimpleListConnection<>(resourceList);
                 //
@@ -155,11 +159,11 @@ class IceAndFireDataFetchers {
 
     private PagedResult<Map<String, Object>> readPagedObjects(String resource, int pageNumber) {
         System.out.println("*DTA readPagedObjects() on "+resource);
-        log.info("Fetching {} page: {}", resource, pageNumber);
+        //log.info("Fetching {} page: {}", resource, pageNumber);
         PagedResult<Map<String, Object>> pagedResult =
                 HttpClient.readResource(resource, qp("pageNumber", pageNumber), qp("pageSize", PAGE_SIZE));
 
-        log.info("\tread {} {}", pagedResult.getResults().size(), resource);
+        //log.info("\tread {} {}", pagedResult.getResults().size(), resource);
 
         pagedResult.getResults().forEach(resourceObj -> {
             //
